@@ -1,5 +1,5 @@
 import styles from './HomePage.module.css'
-import { products } from '../../data/mockProducts.js'
+import { products, bestsellers } from '../../data/mockProducts.js'
 import HeroSection from '../../components/HeroSection/HeroSection.jsx'
 import FeaturesSection from '../../components/FeaturesSection/FeaturesSection.jsx'
 import BrandsSlider from '../../components/BrandsSlider/BrandsSlider.jsx'
@@ -17,6 +17,10 @@ const HomePage = () => {
 				<ProductList products={products} />
 			</section>
 			<CallToActionSection />
+			<section className={styles['home-page__products']}>
+				<h2 className={styles['home-page__title']}>پرفروش‌ترین‌ها</h2>
+				<ProductList products={bestsellers} />
+			</section>
 		</div>
 	)
 }

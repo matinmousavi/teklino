@@ -1,32 +1,37 @@
+import { NavLink } from 'react-router-dom'
 import styles from './Header.module.css'
 
 const Header = () => {
+	const getNavLinkClass = ({ isActive }) => {
+		return isActive ? `${styles['header__nav-link']} ${styles.active}` : styles['header__nav-link']
+	}
+
 	return (
 		<header className={styles.header}>
 			<div className={styles.header__logo}>
-				<a href='/'>تکلینو</a>
+				<NavLink to='/'>تکلینو</NavLink>
 			</div>
 			<nav className={styles.header__nav}>
 				<ul className={styles['header__nav-list']}>
 					<li className={styles['header__nav-item']}>
-						<a href='/' className={styles['header__nav-link']}>
+						<NavLink to='/' className={getNavLinkClass}>
 							خانه
-						</a>
+						</NavLink>
 					</li>
 					<li className={styles['header__nav-item']}>
-						<a href='/products' className={styles['header__nav-link']}>
+						<NavLink to='/products' className={getNavLinkClass}>
 							محصولات
-						</a>
+						</NavLink>
 					</li>
 					<li className={styles['header__nav-item']}>
-						<a href='/cart' className={styles['header__nav-link']}>
+						<NavLink to='/cart' className={styles['header__nav-link']}>
 							سبد خرید
-						</a>
+						</NavLink>
 					</li>
 					<li className={styles['header__nav-item']}>
-						<a href='/login' className={styles['header__nav-link--button']}>
+						<NavLink to='/login' className={styles['header__nav-link--button']}>
 							ورود
-						</a>
+						</NavLink>
 					</li>
 				</ul>
 			</nav>
