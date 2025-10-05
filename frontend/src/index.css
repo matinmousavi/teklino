@@ -14,9 +14,20 @@
   font-display: swap;
 }
 
+:root {
+  --color-primary: #005f73;
+  --color-accent: #ee9b00;
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text-primary: #212529;
+  --color-text-secondary: #6c757d;
+  --color-border: #dee2e6;
+}
+
 body {
   margin: 0;
   font-family: 'Vazirmatn', sans-serif;
-  background-color: #f0f2f5;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   direction: rtl;
 }
