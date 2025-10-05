@@ -1,0 +1,30 @@
+.brands-slider {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.brands-slider__title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+}
+
+.brands-slider__slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brands-slider__logo {
+    max-width: 150px;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.brands-slider__logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+}
