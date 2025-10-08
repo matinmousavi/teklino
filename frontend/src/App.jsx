@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer.jsx'
 import HomePage from './pages/HomePage/HomePage.jsx'
 import ProductsPage from './pages/ProductsPage/ProductsPage.jsx'
 import ProductDetailPage from './pages/ProductDetailPage/ProductDetailPage.jsx'
+import CartPage from './pages/CartPage/CartPage.jsx'
 
 const App = () => {
 	return (
@@ -20,6 +21,7 @@ const App = () => {
 						path='/products/:productId'
 						element={<ProductDetailPage />}
 					/>
+					<Route path='/cart' element={<CartPage />} />
 				</Routes>
 			</main>
 			<Footer />
