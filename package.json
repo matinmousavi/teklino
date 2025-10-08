@@ -1,0 +1,23 @@
+{
+  "name": "teklino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently --names \"BACKEND,FRONTEND\" \"docker-compose up\" \"npm run dev --prefix frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matinmousavi/teklino.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matinmousavi/teklino/issues"
+  },
+  "homepage": "https://github.com/matinmousavi/teklino#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
