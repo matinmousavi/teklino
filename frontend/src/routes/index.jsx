@@ -5,11 +5,12 @@ import ProductsPage from '../pages/userPanel/ProductsPage/ProductsPage.jsx'
 import ProductDetailPage from '../pages/userPanel/ProductDetailPage/ProductDetailPage.jsx'
 import CartPage from '../pages/userPanel/CartPage/CartPage.jsx'
 import LoginPage from '../pages/public/LoginPage/LoginPage.jsx'
+import RegisterPage from '../pages/public/RegisterPage/RegisterPage.jsx'
 
 const AppRoutes = () => {
 	return (
 		<Routes>
-			{/* Routes with MainLayout (Header and Footer) */}
+			{/* Routes with MainLayout */}
 			<Route element={<MainLayout />}>
 				<Route path='/' element={<HomePage />} />
 				<Route path='/products' element={<ProductsPage />} />
@@ -22,6 +23,7 @@ const AppRoutes = () => {
 
 			{/* Routes without MainLayout */}
 			<Route path='/login' element={<LoginPage />} />
+			<Route path='/register' element={<RegisterPage />} />
 		</Routes>
 	)
 }
