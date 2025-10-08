@@ -1,10 +1,10 @@
 import styles from './HomePage.module.css'
-import { products, bestsellers } from '../../data/mockProducts.js'
-import HeroSection from '../../components/HeroSection/HeroSection.jsx'
-import FeaturesSection from '../../components/FeaturesSection/FeaturesSection.jsx'
-import BrandsSlider from '../../components/BrandsSlider/BrandsSlider.jsx'
-import ProductList from '../../components/ProductList/ProductList.jsx'
-import CallToActionSection from '../../components/CallToActionSection/CallToActionSection.jsx'
+import { products, bestsellers } from '../../../data/mockProducts.js'
+import HeroSection from './components/HeroSection/HeroSection.jsx'
+import FeaturesSection from './components/FeaturesSection/FeaturesSection.jsx'
+import BrandsSlider from './components/BrandsSlider/BrandsSlider.jsx'
+import ProductList from '../../../components/ProductList/ProductList.jsx'
+import CallToActionSection from './components/CallToActionSection/CallToActionSection.jsx'
 
 const HomePage = () => {
 	return (

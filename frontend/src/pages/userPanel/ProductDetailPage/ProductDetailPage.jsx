@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import useAPI from '../../hooks/useAPI'
-import useNotification from '../../hooks/useNotification'
-import { useCart } from '../../context/CartContext'
+import useAPI from '../../../hooks/useAPI'
+import useNotification from '../../../hooks/useNotification'
+import { useCart } from '../../../context/CartContext'
 import styles from './ProductDetailPage.module.css'
 
 const ProductDetailPage = () => {

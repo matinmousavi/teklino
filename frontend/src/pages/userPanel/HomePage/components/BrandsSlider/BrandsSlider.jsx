@@ -2,13 +2,15 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 
-import { brands } from '../../data/mockBrands'
+import { brands } from '../../../../../data/mockBrands'
 import styles from './BrandsSlider.module.css'
 
 const BrandsSlider = () => {
 	return (
 		<section className={styles['brands-slider']}>
-			<h2 className={styles['brands-slider__title']}>محبوب‌ترین برندها</h2>
+			<h2 className={styles['brands-slider__title']}>
+				محبوب‌ترین برندها
+			</h2>
 			<Swiper
 				modules={[Autoplay]}
 				spaceBetween={50}
@@ -26,8 +28,15 @@ const BrandsSlider = () => {
 				}}
 			>
 				{brands.map(brand => (
-					<SwiperSlide key={brand.id} className={styles['brands-slider__slide']}>
-						<img src={brand.logo} alt={brand.name} className={styles['brands-slider__logo']} />
+					<SwiperSlide
+						key={brand.id}
+						className={styles['brands-slider__slide']}
+					>
+						<img
+							src={brand.logo}
+							alt={brand.name}
+							className={styles['brands-slider__logo']}
+						/>
 					</SwiperSlide>
 				))}
 			</Swiper>

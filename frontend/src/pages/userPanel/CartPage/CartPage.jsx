@@ -1,5 +1,5 @@
-import { useCart } from '../../context/CartContext'
-import CartItem from '../../components/CartItem/CartItem.jsx'
+import { useCart } from '../../../context/CartContext.jsx'
+import CartItem from './components/CartItem/CartItem.jsx'
 import styles from './CartPage.module.css'
 
 const CartPage = () => {

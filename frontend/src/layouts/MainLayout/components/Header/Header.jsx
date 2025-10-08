@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { useCart } from '../../context/CartContext'
 import styles from './Header.module.css'
+import { useCart } from '../../../../context/CartContext'
 
 const Header = () => {
 	const { state } = useCart()

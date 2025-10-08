@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import useAPI from '../../hooks/useAPI'
-import ProductList from '../../components/ProductList/ProductList.jsx'
+import useAPI from '../../../hooks/useAPI.jsx'
+import ProductList from '../../../components/ProductList/ProductList.jsx'
 import styles from './ProductsPage.module.css'
 
 const ProductsPage = () => {
