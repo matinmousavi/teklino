@@ -68,3 +68,12 @@
   color: var(--color-primary);
   font-weight: bold;
 }
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+}

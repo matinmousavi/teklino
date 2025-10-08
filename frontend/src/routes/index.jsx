@@ -6,6 +6,8 @@ import ProductDetailPage from '../pages/userPanel/ProductDetailPage/ProductDetai
 import CartPage from '../pages/userPanel/CartPage/CartPage.jsx'
 import LoginPage from '../pages/public/LoginPage/LoginPage.jsx'
 import RegisterPage from '../pages/public/RegisterPage/RegisterPage.jsx'
+import ProfilePage from '../pages/userPanel/ProfilePage/ProfilePage.jsx'
+import ProtectedRoute from './ProtectedRoute.jsx'
 
 const AppRoutes = () => {
 	return (
@@ -19,6 +21,11 @@ const AppRoutes = () => {
 					element={<ProductDetailPage />}
 				/>
 				<Route path='/cart' element={<CartPage />} />
+			</Route>
+
+			{/* Protected User Routes */}
+			<Route element={<ProtectedRoute />}>
+				<Route path='/profile' element={<ProfilePage />} />
 			</Route>
 
 			{/* Routes without MainLayout */}
