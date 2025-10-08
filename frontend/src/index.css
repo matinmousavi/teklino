@@ -31,8 +31,3 @@ body {
   color: var(--color-text-primary);
   direction: rtl;
 }
-
-.Toastify__toast {
-  font-family: 'Vazirmatn', sans-serif;
-  font-size: 0.8rem;
-}

@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
-import { toast } from 'react-toastify'
+import useNotification from '../../hooks/useNotification'
 import styles from './ProductCard.module.css'
 
 const ProductCard = ({ product }) => {
 	const { state, dispatch } = useCart()
+	const { openNotification } = useNotification()
 
 	const handleAddToCart = () => {
 		const isItemInCart = state.items.find(item => item.id === product.id)
 
 		if (isItemInCart) {
-			toast.info('این محصول از قبل در سبد خرید شما وجود دارد.')
+			openNotification(
+				'info',
+				'این محصول از قبل در سبد خرید شما وجود دارد.'
+			)
 		} else {
 			dispatch({ type: 'ADD_TO_CART', payload: product })
-			toast.success('محصول با موفقیت به سبد خرید اضافه شد!')
+			openNotification('success', 'محصول با موفقیت به سبد خرید اضافه شد!')
 		}
 	}
 

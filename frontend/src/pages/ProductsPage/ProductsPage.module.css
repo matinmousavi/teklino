@@ -10,3 +10,11 @@
     margin-bottom: 3rem;
     color: var(--color-text-primary);
 }
+
+.products-page__loader,
+.products-page__error {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 5rem;
+    color: var(--color-text-secondary);
+}

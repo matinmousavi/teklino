@@ -1,7 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
 import Header from './components/Header/Header.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import HomePage from './pages/HomePage/HomePage.jsx'
@@ -25,13 +22,6 @@ const App = () => {
 				</Routes>
 			</main>
 			<Footer />
-			<ToastContainer
-				position='bottom-left'
-				autoClose={3000}
-				theme='colored'
-				limit={3}
-				rtl
-			/>
 		</div>
 	)
 }
