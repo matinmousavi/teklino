@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons'
 import styles from './RegisterPage.module.css'
+import { useAuth } from '../../../context/AuthContext'
 
 const RegisterPage = () => {
+	const navigate = useNavigate()
+	const { register } = useAuth()
+
 	const onFinish = values => {
-		console.log('Success:', values)
+		console.log('Register values:', values)
+		register(values)
+		navigate('/')
 	}
 
 	return (

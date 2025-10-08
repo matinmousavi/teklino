@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Checkbox } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import styles from './LoginPage.module.css'
+import { useAuth } from '../../../context/AuthContext'
 
 const LoginPage = () => {
+	const navigate = useNavigate()
+	const { login } = useAuth()
+
 	const onFinish = values => {
-		console.log('Success:', values)
+		console.log('Login values:', values)
+		login(values)
+		navigate('/')
 	}
 
 	return (

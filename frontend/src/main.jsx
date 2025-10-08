@@ -5,6 +5,7 @@ import { App as AntdAppProvider, ConfigProvider } from 'antd'
 import { CartProvider } from './context/CartContext.jsx'
 import App from './App.jsx'
 import './index.css'
+import AuthProvider from './context/AuthContext.jsx'
 
 const theme = {
 	token: {
@@ -22,9 +23,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		<BrowserRouter>
 			<ConfigProvider theme={theme} direction='rtl'>
 				<AntdAppProvider>
-					<CartProvider>
-						<App />
-					</CartProvider>
+					<AuthProvider>
+						<CartProvider>
+							<App />
+						</CartProvider>
+					</AuthProvider>
 				</AntdAppProvider>
 			</ConfigProvider>
 		</BrowserRouter>
