@@ -1,15 +1,47 @@
-import { useEffect } from 'react'
-import { Table, Button, Space, Tooltip, Tag } from 'antd'
+import { useEffect, useState } from 'react'
+import { Table, Button, Space, Tooltip, Modal, Tag } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import useAPI from '../../../hooks/useAPI'
+import useNotification from '../../../hooks/useNotification'
 import styles from './UserListPage.module.css'
 
 const UserListPage = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [userToDelete, setUserToDelete] = useState(null)
 	const api = useAPI()
+	const deleteApi = useAPI()
+	const { openNotification } = useNotification()
 
 	useEffect(() => {
 		api.init('/users')
 	}, [])
+
+	const showDeleteModal = user => {
+		setUserToDelete(user)
+		setIsModalOpen(true)
+	}
+
+	const handleCancel = () => {
+		setIsModalOpen(false)
+		setUserToDelete(null)
+	}
+
+	const handleDelete = async () => {
+		try {
+			const res = await deleteApi.delete(`/users/${userToDelete.id}`)
+			openNotification('success', res.message)
+			api.setData(currentUsers =>
+				currentUsers.filter(user => user.id !== userToDelete.id)
+			)
+			handleCancel()
+		} catch (error) {
+			openNotification(
+				'error',
+				error?.error?.message || 'خطایی در حذف کاربر رخ داد.'
+			)
+			handleCancel()
+		}
+	}
 
 	const columns = [
 		{
@@ -17,16 +49,8 @@ const UserListPage = () => {
 			key: 'rowNumber',
 			render: (_, record, index) => index + 1,
 		},
-		{
-			title: 'نام',
-			dataIndex: 'name',
-			key: 'name',
-		},
-		{
-			title: 'ایمیل',
-			dataIndex: 'email',
-			key: 'email',
-		},
+		{ title: 'نام', dataIndex: 'name', key: 'name' },
+		{ title: 'ایمیل', dataIndex: 'email', key: 'email' },
 		{
 			title: 'نقش',
 			dataIndex: 'role',
@@ -47,7 +71,7 @@ const UserListPage = () => {
 		{
 			title: 'عملیات',
 			key: 'action',
-			render: () => (
+			render: (_, record) => (
 				<Space size='middle'>
 					<Tooltip title='ویرایش'>
 						<Button type='primary' icon={<EditOutlined />} />
@@ -57,6 +81,7 @@ const UserListPage = () => {
 							type='primary'
 							danger
 							icon={<DeleteOutlined />}
+							onClick={() => showDeleteModal(record)}
 						/>
 					</Tooltip>
 				</Space>
@@ -72,10 +97,24 @@ const UserListPage = () => {
 				dataSource={api.data || []}
 				loading={api.isLoading}
 				rowKey='id'
-				pagination={{
-					position: ['bottomCenter'],
-				}}
+				pagination={{ position: ['bottomCenter'] }}
 			/>
+			<Modal
+				title='تایید حذف کاربر'
+				open={isModalOpen}
+				onOk={handleDelete}
+				onCancel={handleCancel}
+				okText='بله، حذف کن'
+				cancelText='خیر'
+				confirmLoading={deleteApi.isLoading}
+				okButtonProps={{ danger: true }}
+			>
+				<p>
+					آیا از حذف کاربر **{userToDelete?.name}** با ایمیل **
+					{userToDelete?.email}** مطمئن هستید؟ این عمل غیرقابل بازگشت
+					است.
+				</p>
+			</Modal>
 		</div>
 	)
 }

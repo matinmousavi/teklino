@@ -190,6 +190,22 @@ const verifyOtp = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    if (user.role === "admin") {
+      res.status(400);
+      throw new Error("امکان حذف کاربر ادمین وجود ندارد");
+    }
+    await User.deleteOne({ _id: user._id });
+    res.status(200).json({ message: "کاربر با موفقیت حذف شد" });
+  } else {
+    res.status(404);
+    throw new Error("کاربر یافت نشد");
+  }
+});
+
 export {
   authUser,
   registerUser,
@@ -199,4 +215,5 @@ export {
   resetPassword,
   requestOtp,
   verifyOtp,
+  deleteUser,
 };

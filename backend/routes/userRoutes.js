@@ -8,6 +8,7 @@ import {
   resetPassword,
   requestOtp,
   verifyOtp,
+  deleteUser,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -21,5 +22,6 @@ router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:token", resetPassword);
 router.post("/request-otp", requestOtp);
 router.post("/verify-otp", verifyOtp);
+router.route('/:id').delete(protect, admin, deleteUser);
 
 export default router;
