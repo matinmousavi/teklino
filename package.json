@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently --names \"BACKEND,FRONTEND\" \"docker-compose up\" \"npm run dev --prefix frontend\""
+    "dev": "concurrently --names \"BACKEND,FRONTEND\" \"docker-compose up --build\" \"npm run dev --prefix frontend\""
   },
   "repository": {
     "type": "git",

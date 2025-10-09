@@ -107,13 +107,6 @@ export default function useAPI() {
 					},
 				}
 
-				if (response.status === 401 || response.status === 403) {
-					const currentPath = window.location.pathname
-					if (currentPath !== '/') {
-						window.location.replace('/')
-					}
-				}
-
 				if (response.status === 406) {
 					openNotification('error', data.message)
 				}
