@@ -1,28 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Checkbox } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
-import styles from './LoginPage.module.css'
 import { useAuth } from '../../../context/AuthContext'
-import useNotification from '../../../hooks/useNotification'
+import styles from './LoginPage.module.css'
 
 const LoginPage = () => {
 	const navigate = useNavigate()
 	const { login } = useAuth()
-	const { openNotification } = useNotification()
 
 	const onFinish = async values => {
 		try {
 			await login(values)
 			navigate('/')
 		} catch (error) {
-			if (error?.error?.status === 401) {
-				openNotification('error', error.error.message)
-			} else {
-				openNotification(
-					'error',
-					'مشکلی در ارتباط با سرور پیش آمده است.'
-				)
-			}
 			console.error('Login failed:', error)
 		}
 	}
@@ -102,8 +92,12 @@ const LoginPage = () => {
 						</Button>
 					</Form.Item>
 				</Form>
-				<div className={styles['login-form-container__register']}>
-					حساب کاربری ندارید؟ <Link to='/register'>ثبت‌نام کنید</Link>
+				<div className={styles['login-form-container__footer']}>
+					<Link to='/login-otp'>ورود با رمز یکبار مصرف</Link>
+					<span className={styles['login-form-container__separator']}>
+						|
+					</span>
+					<Link to='/register'>ثبت‌نام</Link>
 				</div>
 			</div>
 		</div>

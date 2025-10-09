@@ -6,11 +6,9 @@ import sendEmail from "../utils/sendEmail.js";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password, remember } = req.body;
-
   const user = await User.findOne({
     $or: [{ email: email }, { username: email }],
   });
-
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id, remember);
     res.status(200).json({
@@ -27,15 +25,21 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, username, email, password } = req.body;
+  let { name, username, email, password, mobile } = req.body;
+
+  if (mobile && mobile.startsWith("0")) {
+    mobile = `98${mobile.substring(1)}`;
+  }
 
   const userExists = await User.findOne({
-    $or: [{ email: email }, { username: username }],
+    $or: [{ email: email }, { username: username }, { mobile: mobile }],
   });
 
   if (userExists) {
     res.status(400);
-    throw new Error("کاربر با این ایمیل یا نام کاربری از قبل وجود دارد");
+    throw new Error(
+      "کاربر با این ایمیل، نام کاربری یا شماره موبایل از قبل وجود دارد"
+    );
   }
 
   const user = await User.create({
@@ -43,6 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    mobile,
   });
 
   if (user) {
@@ -61,10 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+  res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
   res.status(200).json({ message: "User logged out" });
 });
 
@@ -79,7 +81,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("کاربری با این ایمیل یافت نشد");
   }
-
   const resetToken = crypto.randomBytes(20).toString("hex");
   user.passwordResetToken = crypto
     .createHash("sha256")
@@ -87,10 +88,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
     .digest("hex");
   user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   await user.save();
-
-  const resetURL = `${req.protocol}://localhost:5173/reset-password/${resetToken}`;
+  const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
   const message = `برای بازنشانی رمز عبور خود، لطفاً روی لینک زیر کلیک کنید:\n\n${resetURL}`;
-
   try {
     await sendEmail({
       email: user.email,
@@ -115,19 +114,80 @@ const resetPassword = asyncHandler(async (req, res) => {
     passwordResetToken: resetToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-
   if (!user) {
     res.status(400);
     throw new Error("لینک بازنشانی نامعتبر یا منقضی شده است");
   }
-
   user.password = req.body.password;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-
   generateToken(res, user._id);
   res.status(200).json({ message: "رمز عبور با موفقیت تغییر کرد" });
+});
+
+const requestOtp = asyncHandler(async (req, res) => {
+  let { mobile } = req.body;
+
+  if (mobile.startsWith("0")) {
+    mobile = `98${mobile.substring(1)}`;
+  } else if (mobile.startsWith("9") && mobile.length === 10) {
+    mobile = `98${mobile}`;
+  }
+
+  const user = await User.findOne({ mobile });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("کاربری با این شماره موبایل یافت نشد");
+  }
+
+  const otp = Math.floor(1000 + Math.random() * 9000).toString();
+  user.otp = otp;
+  user.otpExpires = Date.now() + 30 * 1000;
+  await user.save();
+
+  console.log("====================================");
+  console.log(`✅ OTP for ${mobile} is: ${otp}`);
+  console.log("====================================");
+
+  res.status(200).json({
+    success: true,
+    message: "کد یکبار مصرف شبیه‌سازی و در کنسول بک‌اند چاپ شد",
+  });
+});
+
+const verifyOtp = asyncHandler(async (req, res) => {
+  let { mobile, otp } = req.body;
+
+  if (mobile.startsWith("0")) {
+    mobile = `98${mobile.substring(1)}`;
+  } else if (mobile.startsWith("9") && mobile.length === 10) {
+    mobile = `98${mobile}`;
+  }
+
+  const user = await User.findOne({
+    mobile,
+    otpExpires: { $gt: Date.now() },
+  });
+
+  if (!user || user.otp !== otp.toString()) {
+    res.status(400);
+    throw new Error("کد وارد شده نامعتبر یا منقضی شده است");
+  }
+
+  user.otp = undefined;
+  user.otpExpires = undefined;
+  await user.save();
+
+  generateToken(res, user._id, true);
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+  });
 });
 
 export {
@@ -137,4 +197,6 @@ export {
   getUsers,
   forgotPassword,
   resetPassword,
+  requestOtp,
+  verifyOtp,
 };

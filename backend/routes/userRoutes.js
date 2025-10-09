@@ -1,13 +1,15 @@
 import express from "express";
 import {
   authUser,
-  forgotPassword,
-  getUsers,
-  logoutUser,
   registerUser,
+  logoutUser,
+  getUsers,
+  forgotPassword,
   resetPassword,
+  requestOtp,
+  verifyOtp,
 } from "../controllers/userController.js";
-import { admin, protect } from "../middleware/authMiddleware.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -17,5 +19,7 @@ router.post("/login", authUser);
 router.post("/logout", logoutUser);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:token", resetPassword);
+router.post("/request-otp", requestOtp);
+router.post("/verify-otp", verifyOtp);
 
 export default router;

@@ -1,6 +1,10 @@
 #!/bin/sh
 
-# Run the seeder script first
+# Install/update dependencies
+echo "Syncing dependencies..."
+npm install
+
+# Run the seeder script
 echo "Running data seeder..."
 node seeder.js
 

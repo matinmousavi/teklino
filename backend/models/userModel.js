@@ -27,6 +27,13 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "seller", "admin"],
       default: "user",
     },
+    mobile: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    otp: String,
+    otpExpires: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
   },
@@ -50,5 +57,4 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 const User = mongoose.model("User", userSchema);
-
 export default User;

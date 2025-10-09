@@ -1,18 +1,28 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Form, Input, Button } from 'antd'
-import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons'
-import styles from './RegisterPage.module.css'
+import {
+	UserOutlined,
+	MailOutlined,
+	LockOutlined,
+	PhoneOutlined,
+} from '@ant-design/icons'
 import { useAuth } from '../../../context/AuthContext'
+import useNotification from '../../../hooks/useNotification'
+import styles from './RegisterPage.module.css'
 
 const RegisterPage = () => {
 	const navigate = useNavigate()
 	const { register } = useAuth()
+	const { openNotification } = useNotification()
 
 	const onFinish = async values => {
 		try {
 			await register(values)
 			navigate('/')
 		} catch (error) {
+			const errorMessage =
+				error?.error?.message || 'خطایی در هنگام ثبت‌نام رخ داد.'
+			openNotification('error', errorMessage)
 			console.error('Registration failed:', error)
 		}
 	}
@@ -77,6 +87,28 @@ const RegisterPage = () => {
 						<Input
 							prefix={<MailOutlined />}
 							placeholder='ایمیل'
+							size='large'
+						/>
+					</Form.Item>
+
+					<Form.Item
+						label='شماره موبایل (برای ورود با کد یکبار مصرف)'
+						name='mobile'
+						rules={[
+							{
+								required: true,
+								message: 'لطفا شماره موبایل خود را وارد کنید!',
+							},
+							{
+								pattern: /^09\d{9}$/,
+								message:
+									'شماره موبایل باید با 09 شروع شود و 11 رقم باشد!',
+							},
+						]}
+					>
+						<Input
+							prefix={<PhoneOutlined />}
+							placeholder='مثال: 09123456789'
 							size='large'
 						/>
 					</Form.Item>

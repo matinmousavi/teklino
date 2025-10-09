@@ -14,11 +14,12 @@ import ProfilePage from '../pages/userPanel/ProfilePage/ProfilePage.jsx'
 
 import LoginPage from '../pages/public/LoginPage/LoginPage.jsx'
 import RegisterPage from '../pages/public/RegisterPage/RegisterPage.jsx'
+import ForgotPasswordPage from '../pages/public/ForgotPasswordPage/ForgotPasswordPage.jsx'
+import ResetPasswordPage from '../pages/public/ResetPasswordPage/ResetPasswordPage.jsx'
+import OtpLoginPage from '../pages/public/OtpLoginPage/OtpLoginPage.jsx'
 
 import DashboardPage from '../pages/adminPanel/DashboardPage/DashboardPage.jsx'
 import UserListPage from '../pages/adminPanel/UserListPage/UserListPage.jsx'
-import ResetPasswordPage from '../pages/public/ResetPasswordPage/ResetPasswordPage.jsx'
-import ForgotPasswordPage from '../pages/public/ForgotPasswordPage/ForgotPasswordPage.jsx'
 
 const AppRoutes = () => {
 	return (
@@ -31,7 +32,6 @@ const AppRoutes = () => {
 					element={<ProductDetailPage />}
 				/>
 				<Route path='/cart' element={<CartPage />} />
-
 				<Route element={<ProtectedRoute />}>
 					<Route path='/profile' element={<ProfilePage />} />
 				</Route>
@@ -54,6 +54,7 @@ const AppRoutes = () => {
 				path='/reset-password/:token'
 				element={<ResetPasswordPage />}
 			/>
+			<Route path='/login-otp' element={<OtpLoginPage />} />
 		</Routes>
 	)
 }
