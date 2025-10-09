@@ -85,9 +85,9 @@ const LoginPage = () => {
 							>
 								<Checkbox>مرا به خاطر بسپار</Checkbox>
 							</Form.Item>
-							<a href='/forgot-password'>
+							<Link to='/forgot-password'>
 								رمز عبور را فراموش کرده‌اید؟
-							</a>
+							</Link>
 						</div>
 					</Form.Item>
 

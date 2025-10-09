@@ -17,6 +17,8 @@ import RegisterPage from '../pages/public/RegisterPage/RegisterPage.jsx'
 
 import DashboardPage from '../pages/adminPanel/DashboardPage/DashboardPage.jsx'
 import UserListPage from '../pages/adminPanel/UserListPage/UserListPage.jsx'
+import ResetPasswordPage from '../pages/public/ResetPasswordPage/ResetPasswordPage.jsx'
+import ForgotPasswordPage from '../pages/public/ForgotPasswordPage/ForgotPasswordPage.jsx'
 
 const AppRoutes = () => {
 	return (
@@ -47,6 +49,11 @@ const AppRoutes = () => {
 
 			<Route path='/login' element={<LoginPage />} />
 			<Route path='/register' element={<RegisterPage />} />
+			<Route path='/forgot-password' element={<ForgotPasswordPage />} />
+			<Route
+				path='/reset-password/:token'
+				element={<ResetPasswordPage />}
+			/>
 		</Routes>
 	)
 }
