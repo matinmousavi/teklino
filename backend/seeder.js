@@ -1,21 +1,20 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
-import path from "path";
 import users from "./data/users.js";
 import products from "./data/products.js";
 import User from "./models/userModel.js";
 import Product from "./models/productModel.js";
-import Order from "./models/orderModel.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
 
 const importData = async () => {
   try {
-    await Order.deleteMany();
-    await Product.deleteMany();
-    await User.deleteMany();
+    const userCount = await User.countDocuments();
+    if (userCount > 0) {
+      console.log("Database already contains data. Seeder skipped.");
+      return;
+    }
 
     const createdUsers = await User.insertMany(users);
     const adminUser = createdUsers[0]._id;
@@ -33,7 +32,6 @@ const main = async () => {
   await connectDB();
 
   if (process.argv[2] === "-d") {
-    // destroyData function can be added later
     console.log("Data Destroyed!");
     process.exit();
   } else {

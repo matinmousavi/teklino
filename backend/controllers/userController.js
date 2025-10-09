@@ -55,4 +55,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   });
   res.status(200).json({ message: "User logged out" });
 });
-export { authUser, registerUser, logoutUser };
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.status(200).json(users);
+});
+export { authUser, registerUser, logoutUser, getUsers };
