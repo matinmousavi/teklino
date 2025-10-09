@@ -4,33 +4,41 @@ import generateToken from "../utils/generateToken.js";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+
+  const user = await User.findOne({
+    $or: [{ email: email }, { username: email }],
+  });
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
     res.status(200).json({
       _id: user._id,
       name: user.name,
+      username: user.username,
       email: user.email,
       role: user.role,
     });
   } else {
     res.status(401);
-    throw new Error("ایمیل یا رمز عبور نامعتبر است");
+    throw new Error("نام کاربری یا رمز عبور نامعتبر است");
   }
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-  const userExists = await User.findOne({ email });
+  const { name, username, email, password } = req.body;
+
+  const userExists = await User.findOne({
+    $or: [{ email: email }, { username: username }],
+  });
 
   if (userExists) {
     res.status(400);
-    throw new Error("کاربر با این ایمیل از قبل وجود دارد");
+    throw new Error("کاربر با این ایمیل یا نام کاربری از قبل وجود دارد");
   }
 
   const user = await User.create({
     name,
+    username,
     email,
     password,
   });
@@ -40,6 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
+      username: user.username,
       email: user.email,
       role: user.role,
     });

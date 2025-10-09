@@ -40,22 +40,19 @@ const LoginPage = () => {
 					layout='vertical'
 				>
 					<Form.Item
-						label='ایمیل'
+						label='ایمیل یا نام کاربری'
 						name='email'
 						rules={[
 							{
 								required: true,
-								message: 'لطفا ایمیل خود را وارد کنید!',
-							},
-							{
-								type: 'email',
-								message: 'ایمیل وارد شده معتبر نیست!',
+								message:
+									'لطفا ایمیل یا نام کاربری خود را وارد کنید!',
 							},
 						]}
 					>
 						<Input
 							prefix={<MailOutlined />}
-							placeholder='ایمیل'
+							placeholder='ایمیل یا نام کاربری'
 							size='large'
 						/>
 					</Form.Item>

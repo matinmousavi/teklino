@@ -43,6 +43,24 @@ const RegisterPage = () => {
 					</Form.Item>
 
 					<Form.Item
+						label='نام کاربری'
+						name='username'
+						rules={[
+							{
+								required: true,
+								message: 'لطفا نام کاربری خود را وارد کنید!',
+								whitespace: true,
+							},
+						]}
+					>
+						<Input
+							prefix={<UserOutlined />}
+							placeholder='نام کاربری (انگلیسی)'
+							size='large'
+						/>
+					</Form.Item>
+
+					<Form.Item
 						label='ایمیل'
 						name='email'
 						rules={[
