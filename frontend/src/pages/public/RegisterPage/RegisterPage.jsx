@@ -8,10 +8,13 @@ const RegisterPage = () => {
 	const navigate = useNavigate()
 	const { register } = useAuth()
 
-	const onFinish = values => {
-		console.log('Register values:', values)
-		register(values)
-		navigate('/')
+	const onFinish = async values => {
+		try {
+			await register(values)
+			navigate('/')
+		} catch (error) {
+			console.error('Registration failed:', error)
+		}
 	}
 
 	return (

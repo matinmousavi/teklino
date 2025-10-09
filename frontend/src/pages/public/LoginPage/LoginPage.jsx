@@ -8,10 +8,13 @@ const LoginPage = () => {
 	const navigate = useNavigate()
 	const { login } = useAuth()
 
-	const onFinish = values => {
-		console.log('Login values:', values)
-		login(values)
-		navigate('/')
+	const onFinish = async values => {
+		try {
+			await login(values)
+			navigate('/')
+		} catch (error) {
+			console.error('Login failed:', error);
+		}
 	}
 
 	return (
