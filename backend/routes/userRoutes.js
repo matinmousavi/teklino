@@ -9,12 +9,18 @@ import {
   requestOtp,
   verifyOtp,
   deleteUser,
+  getUserById,
+  updateUser,
+  createUser,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").get(protect, admin, getUsers);
+router
+  .route("/")
+  .post(protect, admin, createUser)
+  .get(protect, admin, getUsers);
 router.post("/register", registerUser);
 router.post("/login", authUser);
 router.post("/logout", logoutUser);
@@ -22,6 +28,10 @@ router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:token", resetPassword);
 router.post("/request-otp", requestOtp);
 router.post("/verify-otp", verifyOtp);
-router.route('/:id').delete(protect, admin, deleteUser);
+router
+  .route("/:id")
+  .get(protect, admin, getUserById)
+  .put(protect, admin, updateUser)
+  .delete(protect, admin, deleteUser);
 
 export default router;

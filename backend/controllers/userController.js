@@ -71,7 +71,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).sort({ createdAt: -1 });
   res.status(200).json(users);
 });
 
@@ -205,6 +205,61 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("کاربر یافت نشد");
   }
 });
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404);
+    throw new Error("کاربر یافت نشد");
+  }
+});
+
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.role = req.body.role || user.role;
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+    });
+  } else {
+    res.status(404);
+    throw new Error("کاربر یافت نشد");
+  }
+});
+
+const createUser = asyncHandler(async (req, res) => {
+  const { name, username, email, password, role } = req.body;
+  const userExists = await User.findOne({ $or: [{ email }, { username }] });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error("کاربر با این ایمیل یا نام کاربری از قبل وجود دارد");
+  }
+
+  const user = await User.create({ name, username, email, password, role });
+
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
+  } else {
+    res.status(400);
+    throw new Error("اطلاعات کاربر نامعتبر است");
+  }
+});
 
 export {
   authUser,
@@ -216,4 +271,7 @@ export {
   requestOtp,
   verifyOtp,
   deleteUser,
+  getUserById,
+  updateUser,
+  createUser,
 };
