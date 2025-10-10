@@ -16,3 +16,6 @@
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Uploaded files
+/backend/uploads
