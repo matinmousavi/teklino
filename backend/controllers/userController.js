@@ -9,6 +9,10 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({
     $or: [{ email: email }, { username: email }],
   });
+  if (user && user.isBlocked) {
+    res.status(403);
+    throw new Error("حساب کاربری شما مسدود شده است");
+  }
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id, remember);
     res.status(200).json({
@@ -205,6 +209,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("کاربر یافت نشد");
   }
 });
+
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
   if (user) {
@@ -261,6 +266,22 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
+const toggleUserBlockStatus = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    if (user.role === "admin") {
+      res.status(400);
+      throw new Error("امکان مسدود کردن کاربر ادمین وجود ندارد");
+    }
+    user.isBlocked = !user.isBlocked;
+    await user.save();
+    res.status(200).json({ message: "وضعیت کاربر با موفقیت تغییر کرد" });
+  } else {
+    res.status(404);
+    throw new Error("کاربر یافت نشد");
+  }
+});
+
 export {
   authUser,
   registerUser,
@@ -274,4 +295,5 @@ export {
   getUserById,
   updateUser,
   createUser,
+  toggleUserBlockStatus,
 };

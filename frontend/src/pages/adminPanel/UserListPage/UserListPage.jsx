@@ -9,13 +9,9 @@ import {
 	Input,
 	Select,
 	Tag,
+	Switch,
 } from 'antd'
-import {
-	EditOutlined,
-	DeleteOutlined,
-	PlusOutlined,
-	PhoneOutlined,
-} from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import useAPI from '../../../hooks/useAPI'
 import useNotification from '../../../hooks/useNotification'
 import styles from './UserListPage.module.css'
@@ -28,12 +24,14 @@ const UserListPage = () => {
 	const [editingUser, setEditingUser] = useState(null)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [userToDelete, setUserToDelete] = useState(null)
+	const [userToToggleBlock, setUserToToggleBlock] = useState(null)
 	const [form] = Form.useForm()
 
 	const api = useAPI()
 	const createApi = useAPI()
 	const updateApi = useAPI()
 	const deleteApi = useAPI()
+	const blockApi = useAPI()
 	const { openNotification } = useNotification()
 
 	useEffect(() => {
@@ -51,6 +49,28 @@ const UserListPage = () => {
 			})
 		}
 	}, [editingUser, form])
+
+	const handleToggleBlock = async userToToggle => {
+		setUserToToggleBlock(userToToggle)
+		try {
+			await blockApi.put(`/users/${userToToggle.id}/toggle-block`)
+			openNotification('success', 'وضعیت کاربر با موفقیت تغییر کرد.')
+			api.setData(currentUsers =>
+				currentUsers.map(user =>
+					user.id === userToToggle.id
+						? { ...user, isBlocked: !user.isBlocked }
+						: user
+				)
+			)
+		} catch (error) {
+			openNotification(
+				'error',
+				error?.error?.message || 'خطایی در تغییر وضعیت کاربر رخ داد.'
+			)
+		} finally {
+			setUserToToggleBlock(null)
+		}
+	}
 
 	const showEditModal = user => {
 		setEditingUser(user)
@@ -136,10 +156,31 @@ const UserListPage = () => {
 		{ title: 'نام', dataIndex: 'name', key: 'name' },
 		{ title: 'ایمیل', dataIndex: 'email', key: 'email' },
 		{
-			title: 'شماره تماس',
-			dataIndex: 'mobile',
-			key: 'mobile',
-			render: mobile => mobile || '-',
+			title: 'تاریخ عضویت',
+			dataIndex: 'createdAt',
+			key: 'createdAt',
+			render: date => new Date(date).toLocaleDateString('fa-IR'),
+			sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+		},
+		{
+			title: 'وضعیت',
+			dataIndex: 'isBlocked',
+			key: 'isBlocked',
+			render: (isBlocked, record) => (
+				<span className={isBlocked ? styles['switch-danger'] : ''}>
+					<Switch
+						checkedChildren='فعال'
+						unCheckedChildren='مسدود'
+						checked={!isBlocked}
+						onChange={() => handleToggleBlock(record)}
+						loading={
+							blockApi.isLoading &&
+							userToToggleBlock?.id === record.id
+						}
+						disabled={record.role === 'admin'}
+					/>
+				</span>
+			),
 		},
 		{
 			title: 'نقش',
@@ -165,27 +206,20 @@ const UserListPage = () => {
 			},
 		},
 		{
-			title: 'تاریخ عضویت',
-			dataIndex: 'createdAt',
-			key: 'createdAt',
-			render: date => new Date(date).toLocaleDateString('fa-IR'),
-			sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-		},
-		{
 			title: 'عملیات',
 			key: 'action',
 			render: (_, record) => (
 				<Space size='middle'>
 					<Tooltip title='ویرایش'>
 						<Button
-							type='primary'
+							type='link'
 							icon={<EditOutlined />}
 							onClick={() => showEditModal(record)}
 						/>
 					</Tooltip>
 					<Tooltip title='حذف'>
 						<Button
-							type='primary'
+							type='link'
 							danger
 							icon={<DeleteOutlined />}
 							onClick={() => showDeleteModal(record)}

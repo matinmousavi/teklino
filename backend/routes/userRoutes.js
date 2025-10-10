@@ -12,6 +12,7 @@ import {
   getUserById,
   updateUser,
   createUser,
+  toggleUserBlockStatus,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -33,5 +34,6 @@ router
   .get(protect, admin, getUserById)
   .put(protect, admin, updateUser)
   .delete(protect, admin, deleteUser);
+router.route("/:id/toggle-block").put(protect, admin, toggleUserBlockStatus);
 
 export default router;
