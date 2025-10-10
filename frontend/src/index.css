@@ -32,9 +32,7 @@ body {
   direction: rtl;
 }
 
-.ant-form-item-has-success .ant-form-item-control-input-content,
-.ant-form-item-has-error .ant-form-item-control-input-content,
-.ant-form-item-control-input-content {
+.ant-otp {
   display: flex !important;
   justify-content: center !important;
 }
