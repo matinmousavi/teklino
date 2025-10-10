@@ -36,3 +36,13 @@ body {
   display: flex !important;
   justify-content: center !important;
 }
+
+.ant-switch[aria-checked='false'] {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+}
+
+.ant-switch-checked {
+  background-color: #30c98f !important;
+  border-color: #30c98f !important;
+}

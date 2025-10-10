@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    isBlocked: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     otp: String,
     otpExpires: Date,
     passwordResetToken: String,

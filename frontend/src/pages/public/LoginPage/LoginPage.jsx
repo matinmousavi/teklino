@@ -3,16 +3,26 @@ import { Form, Input, Button, Checkbox } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import { useAuth } from '../../../context/AuthContext'
 import styles from './LoginPage.module.css'
+import useNotification from '../../../hooks/useNotification'
 
 const LoginPage = () => {
 	const navigate = useNavigate()
 	const { login } = useAuth()
+	const { openNotification } = useNotification()
 
 	const onFinish = async values => {
 		try {
 			await login(values)
 			navigate('/')
 		} catch (error) {
+			if (error?.error?.status === 401 || error?.error?.status === 403) {
+				openNotification('error', error.error.message)
+			} else {
+				openNotification(
+					'error',
+					'مشکلی در ارتباط با سرور پیش آمده است.'
+				)
+			}
 			console.error('Login failed:', error)
 		}
 	}
