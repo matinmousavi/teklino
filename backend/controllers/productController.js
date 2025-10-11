@@ -75,10 +75,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const getMyProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({ user: req.user._id });
+  res.status(200).json(products);
+});
+
 export {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  getMyProducts
 };
