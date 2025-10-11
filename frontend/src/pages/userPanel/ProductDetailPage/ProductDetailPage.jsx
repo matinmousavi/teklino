@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { Spin, Button } from 'antd'
 import useAPI from '../../../hooks/useAPI'
 import useNotification from '../../../hooks/useNotification'
 import { useCart } from '../../../context/CartContext'
@@ -30,9 +31,7 @@ const ProductDetailPage = () => {
 
 	if (api.isLoading) {
 		return (
-			<div className={styles['product-detail__loader']}>
-				در حال بارگذاری جزئیات محصول...
-			</div>
+			<Spin size='large' className={styles['product-detail__loader']} />
 		)
 	}
 
@@ -65,14 +64,19 @@ const ProductDetailPage = () => {
 					</p>
 					<div className={styles['product-detail__price-box']}>
 						<span className={styles['product-detail__price']}>
-							{product.price} تومان
+							{product.price.toLocaleString()} تومان
 						</span>
-						<button
+						<Button
+							type='primary'
+							size='large'
 							onClick={() => handleAddToCart(product)}
 							className={styles['product-detail__button']}
+							disabled={product.countInStock === 0}
 						>
-							افزودن به سبد خرید
-						</button>
+							{product.countInStock > 0
+								? 'افزودن به سبد خرید'
+								: 'ناموجود'}
+						</Button>
 					</div>
 				</div>
 			</div>

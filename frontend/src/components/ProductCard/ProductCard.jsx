@@ -6,18 +6,23 @@ import styles from './ProductCard.module.css'
 const ProductCard = ({ product }) => {
 	const { state, dispatch } = useCart()
 	const { openNotification } = useNotification()
+	const toastId = `product-toast-${product.id}`
 
 	const handleAddToCart = () => {
 		const isItemInCart = state.items.find(item => item.id === product.id)
-
 		if (isItemInCart) {
 			openNotification(
 				'info',
-				'این محصول از قبل در سبد خرید شما وجود دارد.'
+				'این محصول از قبل در سبد خرید شما وجود دارد.',
+				{ toastId }
 			)
 		} else {
 			dispatch({ type: 'ADD_TO_CART', payload: product })
-			openNotification('success', 'محصول با موفقیت به سبد خرید اضافه شد!')
+			openNotification(
+				'success',
+				'محصول با موفقیت به سبد خرید اضافه شد!',
+				{ toastId }
+			)
 		}
 	}
 
@@ -36,15 +41,20 @@ const ProductCard = ({ product }) => {
 				</div>
 				<div className={styles.card__content}>
 					<h3 className={styles.card__title}>{product.name}</h3>
-					<p className={styles.card__price}>{product.price} تومان</p>
+					<p className={styles.card__price}>
+						{product.price.toLocaleString()} تومان
+					</p>
 				</div>
 			</Link>
 			<div className={styles['card__button-wrapper']}>
 				<button
 					onClick={handleAddToCart}
 					className={styles.card__button}
+					disabled={product.countInStock === 0}
 				>
-					افزودن به سبد خرید
+					{product.countInStock > 0
+						? 'افزودن به سبد خرید'
+						: 'ناموجود'}
 				</button>
 			</div>
 		</div>
