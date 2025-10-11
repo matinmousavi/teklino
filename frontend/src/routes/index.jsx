@@ -22,6 +22,9 @@ import DashboardPage from '../pages/adminPanel/DashboardPage/DashboardPage.jsx'
 import UserListPage from '../pages/adminPanel/UserListPage/UserListPage.jsx'
 import ProductListPage from '../pages/adminPanel/ProductListPage/ProductListPage.jsx'
 import ProductEditPage from '../pages/adminPanel/ProductEditPage/ProductEditPage.jsx'
+import SellerProductListPage from '../pages/sellerPanel/SellerProductListPage/SellerProductListPage.jsx'
+import SellerRoute from './SellerRoute.jsx'
+import SellerLayout from '../layouts/SellerLayout/SellerLayout.jsx'
 
 const AppRoutes = () => {
 	return (
@@ -54,6 +57,20 @@ const AppRoutes = () => {
 					<Route
 						path='/admin/product/:id/edit'
 						element={<ProductEditPage />}
+					/>
+				</Route>
+			</Route>
+
+			{/* ___________ SELLER ROUTES ___________ */}
+			<Route element={<SellerRoute />}>
+				<Route element={<SellerLayout />}>
+					<Route
+						path='/seller/products'
+						element={<SellerProductListPage />}
+					/>
+					<Route
+						path='/seller/dashboard'
+						element={<div>داشبورد فروشنده</div>}
 					/>
 				</Route>
 			</Route>
