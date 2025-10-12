@@ -1,13 +1,11 @@
 #!/bin/sh
+set -e
 
-# Install/update dependencies
-echo "Syncing dependencies..."
-npm install
+echo ">>> Syncing dependencies..."
+npm install --legacy-peer-deps
 
-# Run the seeder script
-echo "Running data seeder..."
+echo ">>> Running data seeder..."
 node seeder.js
 
-# Then, execute the main command (npm run dev)
-echo "Starting server..."
+echo ">>> Starting server..."
 exec "$@"
