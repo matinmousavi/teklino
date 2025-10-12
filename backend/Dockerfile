@@ -3,11 +3,11 @@ FROM node:20-alpine
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY . .
 
-RUN chmod +x ./entrypoint.sh
+RUN npm install --omit=dev
+
+COPY . .
 
 EXPOSE 5001
 
-ENTRYPOINT [ "./entrypoint.sh" ]
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "start" ]
