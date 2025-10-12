@@ -19,3 +19,6 @@ Thumbs.db
 
 # Uploaded files
 /backend/uploads
+
+# Teklino database information
+Teklino DB Info.txt
