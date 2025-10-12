@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef, createContext } from 'react'
 import useNotification from '../hooks/useNotification'
 
-const apiUrl = '/api'
+const apiUrl = import.meta.env.VITE_API_URL || ''
 
 const APIContext = createContext({})
 
@@ -83,7 +83,7 @@ export default function useAPI() {
 		callsRef.current++
 
 		try {
-			const url = `${apiUrl.replace(/\/+$/g, '')}/${requestUrl.replace(
+			const url = `${apiUrl}/api/${requestUrl.replace(
 				/^\/+/g,
 				''
 			)}${querystring}`
