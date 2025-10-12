@@ -12,7 +12,14 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://teklino.netlify.app"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 
