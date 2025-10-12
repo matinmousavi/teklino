@@ -47,6 +47,14 @@ const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
+    if (
+      req.user.role !== "admin" &&
+      product.user.toString() !== req.user._id.toString()
+    ) {
+      res.status(401);
+      throw new Error("شما اجازه ویرایش این محصول را ندارید");
+    }
+
     product.name = name;
     product.price = price;
     product.description = description;
@@ -67,6 +75,14 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
+    if (
+      req.user.role !== "admin" &&
+      product.user.toString() !== req.user._id.toString()
+    ) {
+      res.status(401);
+      throw new Error("شما اجازه حذف این محصول را ندارید");
+    }
+
     await Product.deleteOne({ _id: product._id });
     res.status(200).json({ message: "محصول با موفقیت حذف شد" });
   } else {
@@ -74,7 +90,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
     throw new Error("محصول یافت نشد");
   }
 });
-
 const getMyProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({ user: req.user._id });
   res.status(200).json(products);
@@ -86,5 +101,5 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
-  getMyProducts
+  getMyProducts,
 };

@@ -69,6 +69,10 @@ const AppRoutes = () => {
 						element={<SellerProductListPage />}
 					/>
 					<Route
+						path='/seller/product/:id/edit'
+						element={<ProductEditPage />}
+					/>
+					<Route
 						path='/seller/dashboard'
 						element={<div>داشبورد فروشنده</div>}
 					/>

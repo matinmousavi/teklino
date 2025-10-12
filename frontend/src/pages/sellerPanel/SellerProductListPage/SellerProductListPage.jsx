@@ -37,10 +37,6 @@ const SellerProductListPage = () => {
 		setFilteredData(filtered)
 	}
 
-	const handleCreateProduct = () => {
-		navigate('/admin/product/new/edit')
-	}
-
 	const handleDelete = async () => {
 		try {
 			const res = await deleteApi.delete(
@@ -74,36 +70,18 @@ const SellerProductListPage = () => {
 			key: 'image',
 			render: image => <Image width={60} src={image} />,
 		},
-		{
-			title: 'نام',
-			dataIndex: 'name',
-			key: 'name',
-		},
+		{ title: 'نام', dataIndex: 'name', key: 'name' },
 		{
 			title: 'قیمت',
 			dataIndex: 'price',
 			key: 'price',
 			render: price => `${price.toLocaleString()} تومان`,
-			sorter: (a, b) => a.price - b.price,
 		},
-		{
-			title: 'دسته بندی',
-			dataIndex: 'category',
-			key: 'category',
-		},
+		{ title: 'دسته بندی', dataIndex: 'category', key: 'category' },
 		{
 			title: 'وضعیت',
 			dataIndex: 'countInStock',
 			key: 'status',
-			filters: [
-				{ text: 'موجود', value: 'inStock' },
-				{ text: 'ناموجود', value: 'outOfStock' },
-			],
-			onFilter: (value, record) => {
-				if (value === 'inStock') return record.countInStock > 0
-				if (value === 'outOfStock') return record.countInStock === 0
-				return true
-			},
 			render: countInStock =>
 				countInStock > 0 ? (
 					<Tag color='green'>موجود</Tag>
@@ -121,7 +99,7 @@ const SellerProductListPage = () => {
 							type='primary'
 							icon={<EditOutlined />}
 							onClick={() =>
-								navigate(`/admin/product/${record.id}/edit`)
+								navigate(`/seller/product/${record.id}/edit`)
 							}
 						/>
 					</Tooltip>
@@ -145,7 +123,7 @@ const SellerProductListPage = () => {
 				<Button
 					type='primary'
 					icon={<PlusOutlined />}
-					onClick={handleCreateProduct}
+					onClick={() => navigate('/seller/product/new/edit')}
 				>
 					افزودن محصول
 				</Button>
