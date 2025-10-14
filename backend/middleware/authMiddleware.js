@@ -29,4 +29,13 @@ const admin = (req, res, next) => {
   }
 };
 
-export { protect, admin };
+const isSellerOrAdmin = (req, res, next) => {
+  if (req.user && (req.user.role === "seller" || req.user.role === "admin")) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error("برای این عملیات باید نقش فروشنده یا مدیر داشته باشید");
+  }
+};
+
+export { protect, admin, isSellerOrAdmin };
