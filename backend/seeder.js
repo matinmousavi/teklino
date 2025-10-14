@@ -1,24 +1,42 @@
-import { fileURLToPath } from "url";
-import users from "./data/users.js";
-import products from "./data/products.js";
-import User from "./models/userModel.js";
-import Product from "./models/productModel.js";
-import connectDB from "./config/db.js";
+import mongoose from 'mongoose';
+import users from './data/users.js';
+import products from './data/products.js';
+import provincesData from './data/provinces.json' with { type: 'json' };
+import citiesData from './data/cities.json' with { type: 'json' };
+import User from './models/userModel.js';
+import Product from './models/productModel.js';
+import Order from './models/orderModel.js';
+import Province from './models/provinceModel.js';
+import City from './models/cityModel.js';
+import connectDB from './config/db.js';
 
 const importData = async () => {
   try {
-    const userCount = await User.countDocuments();
-    if (userCount > 0) {
-      console.log("Database already contains data. Seeder skipped.");
-      return;
-    }
+    await Order.deleteMany();
+    await Product.deleteMany();
+    await User.deleteMany();
+    await Province.deleteMany();
+    await City.deleteMany();
 
     const createdUsers = await User.insertMany(users);
     const adminUser = createdUsers[0]._id;
     const sampleProducts = products.map((p) => ({ ...p, user: adminUser }));
     await Product.insertMany(sampleProducts);
 
-    console.log("Data Imported successfully!");
+    const provincesToInsert = provincesData.map(p => ({ 
+      name: p.provinceName, 
+      original_id: parseInt(p.provinceId) 
+    }));
+    await Province.insertMany(provincesToInsert);
+
+    const citiesToInsert = citiesData.map(c => ({
+      name: c.cityName,
+      province_id: parseInt(c.provinceId)
+    }));
+    await City.insertMany(citiesToInsert);
+
+    console.log('Data Imported successfully!');
+    process.exit(0);
   } catch (error) {
     console.error(`Error in seeder: ${error}`);
     process.exit(1);
@@ -27,19 +45,7 @@ const importData = async () => {
 
 const main = async () => {
   await connectDB();
-
-  if (process.argv[2] === "-d") {
-    console.log("Data Destroyed!");
-    process.exit();
-  } else {
-    await importData();
-    process.exit();
-  }
+  await importData();
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __isDirectlyRun = process.argv[1] === __filename;
-
-if (__isDirectlyRun) {
-  main();
-}
+main(); 
