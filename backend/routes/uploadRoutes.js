@@ -1,4 +1,3 @@
-import path from "path";
 import express from "express";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
@@ -14,7 +13,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "teklino",
-    format: async (req, file) => "jpg",
+    format: async () => "jpg",
   },
 });
 
