@@ -2,11 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package*.json ./
 
-RUN chmod +x ./entrypoint.sh
+RUN npm install --legacy-peer-deps
+
+COPY . .
 
 EXPOSE 5001
 
-ENTRYPOINT [ "./entrypoint.sh" ]
-CMD [ "npm", "run", "dev" ]
+CMD ["sh", "-c", "npm run data:import && npm run dev"]
