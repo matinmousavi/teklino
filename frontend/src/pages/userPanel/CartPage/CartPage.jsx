@@ -1,17 +1,24 @@
-import { useCart } from '../../../context/CartContext.jsx'
+import { useNavigate } from 'react-router-dom'
+import { useCart } from '../../../context/CartContext'
 import CartItem from './components/CartItem/CartItem.jsx'
 import styles from './CartPage.module.css'
+import { Button } from 'antd'
 
 const CartPage = () => {
 	const { state } = useCart()
+	const navigate = useNavigate()
 
 	const calculateTotalPrice = () => {
 		return state.items
 			.reduce((total, item) => {
-				const price = parseInt(item.price.replace(/,/g, ''))
+				const price = parseInt(String(item.price).replace(/,/g, ''))
 				return total + price * item.quantity
 			}, 0)
 			.toLocaleString()
+	}
+
+	const handleCheckout = () => {
+		navigate('/checkout')
 	}
 
 	return (
@@ -34,9 +41,16 @@ const CartPage = () => {
 							<span>مبلغ کل:</span>
 							<span>{calculateTotalPrice()} تومان</span>
 						</div>
-						<button className={styles['summary__checkout-btn']}>
+						<Button
+							type='primary'
+							block
+							size='large'
+							className={styles['summary__checkout-btn']}
+							onClick={handleCheckout}
+							disabled={state.items.length === 0}
+						>
 							ادامه فرآیند خرید
-						</button>
+						</Button>
 					</div>
 				</div>
 			)}

@@ -14,14 +14,16 @@ const ProductCard = ({ product }) => {
 			openNotification(
 				'info',
 				'این محصول از قبل در سبد خرید شما وجود دارد.',
-				{ toastId }
+				'',
+				{ key: toastId }
 			)
 		} else {
 			dispatch({ type: 'ADD_TO_CART', payload: product })
 			openNotification(
 				'success',
 				'محصول با موفقیت به سبد خرید اضافه شد!',
-				{ toastId }
+				'',
+				{ key: toastId }
 			)
 		}
 	}
