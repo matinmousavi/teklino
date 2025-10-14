@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Form, Input, Button, Spin, InputNumber, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import useAPI from '../../../hooks/useAPI'
@@ -9,12 +9,16 @@ import styles from './ProductEditPage.module.css'
 const ProductEditPage = () => {
 	const { id: productId } = useParams()
 	const navigate = useNavigate()
+	const location = useLocation()
 	const [form] = Form.useForm()
 	const isCreateMode = productId === 'new'
+	const isAdminPanel = location.pathname.includes('/admin/')
 
 	const api = useAPI()
 	const actionApi = useAPI()
 	const { openNotification } = useNotification()
+
+	const backUrl = isAdminPanel ? '/admin/products' : '/seller/products'
 
 	useEffect(() => {
 		if (!isCreateMode) {
@@ -39,7 +43,7 @@ const ProductEditPage = () => {
 				await actionApi.put(`/products/${productId}`, values)
 				openNotification('success', 'محصول با موفقیت ویرایش شد.')
 			}
-			navigate('/admin/products')
+			navigate(backUrl)
 		} catch (error) {
 			const errorMessage =
 				error?.error?.message ||
@@ -73,15 +77,13 @@ const ProductEditPage = () => {
 
 	return (
 		<div>
-			<Link to='/admin/products'>
+			<Link to={backUrl}>
 				<Button style={{ marginBottom: '1rem' }}>
 					بازگشت به لیست محصولات
 				</Button>
 			</Link>
 			<h1 className={styles['page-title']}>
-				{isCreateMode
-					? 'ایجاد محصول جدید'
-					: `ویرایش محصول: ${api.data?.name}`}
+				{isCreateMode ? 'ایجاد محصول جدید' : `ویرایش محصول`}
 			</h1>
 
 			<Form form={form} layout='vertical' onFinish={onFinish}>
@@ -99,7 +101,7 @@ const ProductEditPage = () => {
 				</Form.Item>
 				<Form.Item
 					name='price'
-					label='قیمت ( تومان )'
+					label='قیمت'
 					rules={[
 						{ required: true, message: 'لطفاً قیمت را وارد کنید' },
 					]}

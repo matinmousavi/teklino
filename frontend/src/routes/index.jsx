@@ -65,16 +65,16 @@ const AppRoutes = () => {
 			<Route element={<SellerRoute />}>
 				<Route element={<SellerLayout />}>
 					<Route
+						path='/seller/dashboard'
+						element={<div>داشبورد فروشنده</div>}
+					/>
+					<Route
 						path='/seller/products'
 						element={<SellerProductListPage />}
 					/>
 					<Route
 						path='/seller/product/:id/edit'
 						element={<ProductEditPage />}
-					/>
-					<Route
-						path='/seller/dashboard'
-						element={<div>داشبورد فروشنده</div>}
 					/>
 				</Route>
 			</Route>
