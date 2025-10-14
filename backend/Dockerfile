@@ -2,12 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-RUN npm install --omit=dev
-
 COPY . .
+
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 5001
 
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
+CMD [ "npm", "run", "dev" ]
