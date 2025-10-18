@@ -25,6 +25,8 @@ import ProductEditPage from '../pages/adminPanel/ProductEditPage/ProductEditPage
 import SellerProductListPage from '../pages/sellerPanel/SellerProductListPage/SellerProductListPage.jsx'
 import SellerRoute from './SellerRoute.jsx'
 import SellerLayout from '../layouts/SellerLayout/SellerLayout.jsx'
+import OrderDetailPage from '../pages/userPanel/OrderDetailPage/OrderDetailPage.jsx'
+import CheckoutPage from '../pages/userPanel/CheckoutPage/CheckoutPage.jsx'
 
 const AppRoutes = () => {
 	return (
@@ -40,6 +42,11 @@ const AppRoutes = () => {
 				<Route path='/cart' element={<CartPage />} />
 				<Route element={<ProtectedRoute />}>
 					<Route path='/profile' element={<ProfilePage />} />
+					<Route path='/checkout' element={<CheckoutPage />} />
+					<Route
+						path='/profile/orders/:id'
+						element={<OrderDetailPage />}
+					/>
 				</Route>
 			</Route>
 			{/* ___________ ADMIN ROUTES ___________ */}

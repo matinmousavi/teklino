@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5001
 
-CMD ["sh", "-c", "npm run data:import && npm run dev"]
+CMD [ "npm", "run", "dev" ]

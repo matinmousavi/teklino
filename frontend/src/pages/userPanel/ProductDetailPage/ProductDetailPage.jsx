@@ -11,6 +11,7 @@ const ProductDetailPage = () => {
 	const api = useAPI()
 	const { state, dispatch } = useCart()
 	const { openNotification } = useNotification()
+	const toastId = `product-detail-toast-${productId}`
 
 	useEffect(() => {
 		api.init(`/products/${productId}`)
@@ -21,11 +22,18 @@ const ProductDetailPage = () => {
 		if (isItemInCart) {
 			openNotification(
 				'info',
-				'این محصول از قبل در سبد خرید شما وجود دارد.'
+				'این محصول از قبل در سبد خرید شما وجود دارد.',
+				'',
+				{ key: toastId }
 			)
 		} else {
 			dispatch({ type: 'ADD_TO_CART', payload: product })
-			openNotification('success', 'محصول با موفقیت به سبد خرید اضافه شد!')
+			openNotification(
+				'success',
+				'محصول با موفقیت به سبد خرید اضافه شد!',
+				'',
+				{ key: toastId }
+			)
 		}
 	}
 

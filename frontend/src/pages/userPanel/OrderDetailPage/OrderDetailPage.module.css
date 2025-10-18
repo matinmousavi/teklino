@@ -1,0 +1,17 @@
+.order-detail-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.page-title {
+    margin-bottom: 2rem;
+}
+
+.page-loader,
+.page-error {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 5rem;
+    color: var(--color-text-secondary);
+}

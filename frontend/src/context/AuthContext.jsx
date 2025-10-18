@@ -15,20 +15,11 @@ const AuthProvider = ({ children }) => {
 	const isLogin = !!user
 
 	useEffect(() => {
-		const checkUserStatus = async () => {
-			try {
-				const storedUser = JSON.parse(localStorage.getItem('user'))
-				if (storedUser) {
-					setUser(storedUser)
-				}
-			} catch (error) {
-				console.log('Error fetching user:', error)
-				setUser(null)
-			} finally {
-				setInitLoading(false)
-			}
+		const storedUser = localStorage.getItem('user')
+		if (storedUser) {
+			setUser(JSON.parse(storedUser))
 		}
-		checkUserStatus()
+		setInitLoading(false)
 	}, [])
 
 	const login = async userData => {
@@ -46,6 +37,7 @@ const AuthProvider = ({ children }) => {
 	const logout = async () => {
 		await api.post('/users/logout')
 		localStorage.removeItem('user')
+		localStorage.removeItem('shippingAddress')
 		setUser(null)
 		window.location.replace('/')
 	}
