@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Table, Button, Space, Tooltip, Modal, Input, Tag, Image } from 'antd'
+import {
+	Table,
+	Button,
+	Space,
+	Tooltip,
+	Modal,
+	Input,
+	Tag,
+	Image,
+	Empty,
+} from 'antd'
 import {
 	EditOutlined,
 	DeleteOutlined,
@@ -16,7 +26,6 @@ const ProductListPage = () => {
 	const [filteredData, setFilteredData] = useState([])
 	const navigate = useNavigate()
 	const api = useAPI()
-	const createApi = useAPI()
 	const deleteApi = useAPI()
 	const { openNotification } = useNotification()
 
@@ -36,10 +45,6 @@ const ProductListPage = () => {
 			product.name.toLowerCase().includes(value)
 		)
 		setFilteredData(filtered)
-	}
-
-	const handleCreateProduct = () => {
-		navigate('/admin/product/new/edit')
 	}
 
 	const handleDelete = async () => {
@@ -75,11 +80,7 @@ const ProductListPage = () => {
 			key: 'image',
 			render: image => <Image width={60} src={image} />,
 		},
-		{
-			title: 'نام',
-			dataIndex: 'name',
-			key: 'name',
-		},
+		{ title: 'نام', dataIndex: 'name', key: 'name' },
 		{
 			title: 'قیمت',
 			dataIndex: 'price',
@@ -87,11 +88,7 @@ const ProductListPage = () => {
 			render: price => `${price.toLocaleString()} تومان`,
 			sorter: (a, b) => a.price - b.price,
 		},
-		{
-			title: 'دسته بندی',
-			dataIndex: 'category',
-			key: 'category',
-		},
+		{ title: 'دسته بندی', dataIndex: 'category', key: 'category' },
 		{
 			title: 'وضعیت',
 			dataIndex: 'countInStock',
@@ -146,8 +143,7 @@ const ProductListPage = () => {
 				<Button
 					type='primary'
 					icon={<PlusOutlined />}
-					onClick={handleCreateProduct}
-					loading={createApi.isLoading}
+					onClick={() => navigate('/admin/product/new/edit')}
 				>
 					افزودن محصول
 				</Button>
@@ -164,6 +160,9 @@ const ProductListPage = () => {
 				loading={api.isLoading}
 				rowKey='id'
 				pagination={{ position: ['bottomCenter'] }}
+				locale={{
+					emptyText: <Empty description='هیچ محصولی یافت نشد' />,
+				}}
 			/>
 			{productToDelete && (
 				<Modal
