@@ -5,7 +5,6 @@ const PlaceOrderStep = ({ shippingAddress, onPlaceOrder, isLoading }) => {
 	const { state } = useCart()
 	const { items } = state
 
-	// Temporary price calculation logic
 	const itemsPrice = items.reduce(
 		(acc, item) => acc + item.price * item.quantity,
 		0
@@ -16,9 +15,12 @@ const PlaceOrderStep = ({ shippingAddress, onPlaceOrder, isLoading }) => {
 
 	const handlePlaceOrder = () => {
 		onPlaceOrder({
-			orderItems: items,
+			orderItems: items.map(item => ({
+				...item,
+				qty: item.quantity,
+			})),
 			shippingAddress,
-			paymentMethod: 'PayPal', // Placeholder
+			paymentMethod: 'PayPal',
 			itemsPrice,
 			taxPrice,
 			shippingPrice,

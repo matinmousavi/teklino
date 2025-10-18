@@ -23,9 +23,9 @@ const importData = async () => {
     const sampleProducts = products.map((p) => ({ ...p, user: adminUser }));
     await Product.insertMany(sampleProducts);
 
-    const provincesToInsert = provincesData.map(p => ({ 
-      name: p.provinceName, 
-      original_id: parseInt(p.provinceId) 
+    const provincesToInsert = provincesData.map(p => ({
+      name: p.provinceName,
+      original_id: parseInt(p.provinceId)
     }));
     await Province.insertMany(provincesToInsert);
 
@@ -48,4 +48,4 @@ const main = async () => {
   await importData();
 };
 
-main(); 
+main();

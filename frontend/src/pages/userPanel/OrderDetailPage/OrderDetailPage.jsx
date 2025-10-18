@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Spin, Row, Col, Card, List, Tag } from 'antd'
+import { useParams, Link } from 'react-router-dom'
+import { Spin, Row, Col, Card, List, Tag, Button } from 'antd'
 import useAPI from '../../../hooks/useAPI'
 import styles from './OrderDetailPage.module.css'
 
@@ -22,7 +22,7 @@ const OrderDetailPage = () => {
 		)
 	}
 
-	const { order } = api.data || {}
+	const order = api.data
 
 	return (
 		<div className={styles['order-detail-page']}>
@@ -48,9 +48,7 @@ const OrderDetailPage = () => {
 								{order.shippingAddress.postalCode}
 							</p>
 							{order.isDelivered ? (
-								<Tag color='green'>
-									تحویل داده شده در تاریخ...
-								</Tag>
+								<Tag color='green'>تحویل داده شده</Tag>
 							) : (
 								<Tag color='red'>در حال پردازش</Tag>
 							)}
@@ -69,11 +67,11 @@ const OrderDetailPage = () => {
 												/>
 											}
 											title={
-												<a
-													href={`/products/${item.product}`}
+												<Link
+													to={`/products/${item.product}`}
 												>
 													{item.name}
-												</a>
+												</Link>
 											}
 											description={`${
 												item.qty
@@ -115,7 +113,7 @@ const OrderDetailPage = () => {
 												padding: '0.5rem',
 											}}
 										>
-											پرداخت شده در تاریخ...
+											پرداخت شده
 										</Tag>
 									) : (
 										<Tag

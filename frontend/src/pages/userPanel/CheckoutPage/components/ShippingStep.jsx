@@ -49,7 +49,12 @@ const ShippingStep = ({ onFinish, initialValues }) => {
 
 	return (
 		<Spin spinning={provincesApi.isLoading || citiesApi.isLoading}>
-			<Form form={form} layout='vertical' onFinish={onFinish}>
+			<Form
+				form={form}
+				layout='vertical'
+				onFinish={onFinish}
+				initialValues={{ country: 'ایران' }}
+			>
 				<Form.Item
 					label='استان'
 					name='province'
@@ -109,6 +114,15 @@ const ShippingStep = ({ onFinish, initialValues }) => {
 							required: true,
 							message: 'لطفاً کد پستی را وارد کنید',
 						},
+					]}
+				>
+					<Input />
+				</Form.Item>
+				<Form.Item
+					label='کشور'
+					name='country'
+					rules={[
+						{ required: true, message: 'لطفاً کشور را وارد کنید' },
 					]}
 				>
 					<Input />

@@ -20,6 +20,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       orderItems: orderItems.map((x) => ({
         ...x,
         product: x.id,
+        _id: undefined,
       })),
       user: req.user._id,
       shippingAddress,
@@ -47,6 +48,13 @@ const getOrderById = asyncHandler(async (req, res) => {
   );
 
   if (order) {
+    if (
+      order.user._id.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      res.status(401);
+      throw new Error("شما اجازه دسترسی به این سفارش را ندارید");
+    }
     res.status(200).json(order);
   } else {
     res.status(404);
